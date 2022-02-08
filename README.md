@@ -20,6 +20,6 @@
 </li>
 </ul>
 <p id="bkmrk-avant-de-lancer-le-y">avant de lancer le yaml, veuiller remplacer les variables par vos chemins pour stocker vos datas ainsi que la variable ${IP_ADDRESS}: par rien dutout en laissant que les ports ! </p>
-<p id="bkmrk-enregister-le-yaml-s">enregister le yaml suivant avec le nom suivant : docker-compose.yaml></p>
+<p id="bkmrk-enregister-le-yaml-s">enregister le yaml suivant avec le nom suivant : docker-compose.yaml</p>
 <p id="bkmrk-lancer-votre-stack-%3A">lancer votre stack :</p>
 <pre id="bkmrk-docker-compose-up--d"><code class="language-shell">docker-compose up -d</code></pre>
