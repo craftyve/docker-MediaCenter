@@ -67,25 +67,24 @@ services:
     image: netdata/netdata:latest
     container_name: netdata
     hostname: '${HOSTNAME}'
-    restart: unless-stopped
-    network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:19999:19999'
+        - '19999:19999'
+    restart: unless-stopped
     cap_add:
-        - SYS_PTRACE
+      - SYS_PTRACE
     security_opt:
-        - apparmor:unconfined
+      - apparmor:unconfined
+    volumes:
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
     environment:
-        - PGID=${DOCKERGRP}
         - NETDATA_CLAIM_TOKEN=''
         - NETDATA_CLAIM_URL=https://app.netdata.cloud
         - NETDATA_CLAIM_ROOMS=''
-    volumes:
-        - '/proc:/host/proc:ro'
-        - '/sys:/host/sys:ro'
-        - '/var/run/docker.sock:/var/run/docker.sock:rw'
-
- 
+        
   # ----------------------------------------
   # PLEX
   # ----------------------------------------
