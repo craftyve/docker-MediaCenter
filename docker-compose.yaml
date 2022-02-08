@@ -14,17 +14,17 @@ services:
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:8112:8112'
-        - '${IP_ADDRESS}:8118:8118'
-        - '${IP_ADDRESS}:58846:58846'
-        - '${IP_ADDRESS}:58946:58946'
+        - '8112:8112'
+        - '8118:8118'
+        - '58846:58846'
+        - '58946:58946'
     cap_add:
         - NET_ADMIN
     environment:
         - VPN_ENABLED=yes
-        - VPN_USER=${PIAUNAME}
-        - VPN_PASS=${PIAPASS}
-        - VPN_REMOTE=${VPN_REMOTE}
+        - VPN_USER= # username of your VPN account for your provider
+        - VPN_PASS= # password of your VPN account for your provider
+        #- VPN_REMOTE=${VPN_REMOTE} # select your file .ovpn
         - VPN_PORT=1198
         - VPN_PROTOCOL=udp
         - VPN_DEVICE_TYPE=tun
@@ -32,13 +32,13 @@ services:
         - STRONG_CERTS=no
         - ENABLE_PRIVOXY=yes
         - STRICT_PORT_FORWARD=yes
-        - LAN_NETWORK=${CIDR_ADDRESS}
+        #- LAN_NETWORK=${CIDR_ADDRESS}
         - NAME_SERVERS=84.200.69.80,37.235.1.174,1.1.1.1,37.235.1.177,84.200.70.40,1.0.0.1
         - DEBUG=false
-        - PUID=${PUID}
-        - PGID=${PGID}
+        - PUID=1000
+        - PGID=1000
     volumes:
-        - '${DLDIR}:/data'
+        #- '${DLDIR}:/data'
         - './delugevpn/config:/config'
         - '/etc/localtime:/etc/localtime:ro'
 
@@ -51,13 +51,13 @@ services:
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:9117:9117'
+        - '9117:9117'
     environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
+        - PUID=1000
+        - PGID=1000
     volumes:
         - './jackett:/config'
-        - '${DLDIR}/completed:/downloads'
+        #- '${DLDIR}/completed:/downloads'
         - '/etc/localtime:/etc/localtime:ro'
  
   # ----------------------------------------
@@ -66,7 +66,7 @@ services:
   netdata:
     image: netdata/netdata:latest
     container_name: netdata
-    hostname: '${HOSTNAME}'
+    hostname: 'mediacenter'
     ports:
         - '19999:19999'
     restart: unless-stopped
@@ -80,43 +80,42 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /etc/os-release:/host/etc/os-release:ro
-    environment:
-        - NETDATA_CLAIM_TOKEN=''
-        - NETDATA_CLAIM_URL=https://app.netdata.cloud
-        - NETDATA_CLAIM_ROOMS=''
+    # environment:
+    #     - NETDATA_CLAIM_TOKEN=''
+    #     - NETDATA_CLAIM_URL=https://app.netdata.cloud
+    #     - NETDATA_CLAIM_ROOMS=''
         
   # ----------------------------------------
   # PLEX
   # ----------------------------------------
   plex:
     container_name: plex
-    image: plexinc/pms-docker:${PMSTAG}
+    image: plexinc/pms-docker
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:32400:32400/tcp'
-        - '${IP_ADDRESS}:3005:3005/tcp'
-        - '${IP_ADDRESS}:8324:8324/tcp'
-        - '${IP_ADDRESS}:32469:32469/tcp'
-        - '${IP_ADDRESS}:1900:1900/udp'
-        - '${IP_ADDRESS}:32410:32410/udp'
-        - '${IP_ADDRESS}:32412:32412/udp'
-        - '${IP_ADDRESS}:32413:32413/udp'
-        - '${IP_ADDRESS}:32414:32414/udp'
+        - '32400:32400/tcp'
+        - '3005:3005/tcp'
+        - '8324:8324/tcp'
+        - '32469:32469/tcp'
+        - '1900:1900/udp'
+        - '32410:32410/udp'
+        - '32412:32412/udp'
+        - '32413:32413/udp'
+        - '32414:32414/udp'
     environment:
-        - PLEX_CLAIM=${PMSTOKEN}
-        - ADVERTISE_IP=http://${IP_ADDRESS}:32400/
-        - ALLOWED_NETWORKS=${CIDR_ADDRESS}
-        - PLEX_UID=${PUID}
-        - PLEX_GID=${PGID}
-    hostname: ${HOSTNAME}
+        - PLEX_CLAIM=''
+        - ADVERTISE_IP=http://32400/
+        - PLEX_UID=1000
+        - PLEX_GID=1000
+    hostname: mediacenter
     volumes:
         - './plex:/config'
         - './plex/transcode:/transcode'
-        - '${MISCDIR}:/data/misc'
-        - '${MOVIEDIR}:/data/movies'
-        - '${MUSICDIR}:/data/music'
-        - '${TVDIR}:/data/tvshows'
+        #- '${MISCDIR}:/data/misc'
+        #- '${MOVIEDIR}:/data/movies'
+        #- '${MUSICDIR}:/data/music'
+        #- '${TVDIR}:/data/tvshows'
         - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
@@ -128,10 +127,10 @@ services:
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:9000:9000'
+        - '9000:9000'
     environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
+        - PUID=1000
+        - PGID=1000
     volumes:
         - './portainer:/data'
         - '/var/run/docker.sock:/var/run/docker.sock'
@@ -147,14 +146,14 @@ services:
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:7878:7878'
+        - '7878:7878'
     environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
+        - PUID=1000
+        - PGID=1000
     volumes:
         - './radarr:/config'
-        - '${DLDIR}/completed:/data/completed'
-        - '${MOVIEDIR}:/movies'
+        #- '${DLDIR}/completed:/data/completed'
+        #- '${MOVIEDIR}:/movies'
         - '/etc/localtime:/etc/localtime:ro'
 
   # ----------------------------------------
@@ -166,15 +165,15 @@ services:
     restart: unless-stopped
     network_mode: "bridge"
     ports:
-        - '${IP_ADDRESS}:8989:8989'
+        - '8989:8989'
     environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
-        - TZ=${TZ}
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/Paris
     volumes:
         - './sonarr:/config'
-        - '${DLDIR}/completed:/data/completed'
-        - '${TVDIR}:/tv'
+        #- '${DLDIR}/completed:/data/completed'
+        #- '${TVDIR}:/tv'
         - '/etc/localtime:/etc/localtime:ro'
   # ----------------------------------------
   # WATCHTOWER
@@ -184,11 +183,11 @@ services:
     container_name: watchtower
     restart: unless-stopped
     network_mode: "bridge"
-    hostname: '${HOSTNAME}'
+    hostname: 'mediacenter'
     environment:
         - WATCHTOWER_CLEANUP=true
         - WATCHTOWER_SCHEDULE=0 0 */4 * * *
         - WATCHTOWER_INCLUDE_STOPPED=true
-        - TZ=${TZ}
+        - TZ=Europe/Paris
     volumes:
         - '/var/run/docker.sock:/var/run/docker.sock'
