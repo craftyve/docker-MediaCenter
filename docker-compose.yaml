@@ -77,9 +77,9 @@ services:
         - apparmor:unconfined
     environment:
         - PGID=${DOCKERGRP}
-        - NETDATA_CLAIM_TOKEN=mOdmVDLrtzALoSgMioxMyvOdkaAYh4yVXkE6sq7qsy5GX15UJTWxyAHyKpbURbTJD6LYI0iBNR7J8-3HZ5TsMfZDeOYwBdb8aOgfu0vKoNcFvPRDKBwEPIhcm71LpUJyBMDtH7M
+        - NETDATA_CLAIM_TOKEN=''
         - NETDATA_CLAIM_URL=https://app.netdata.cloud
-        - NETDATA_CLAIM_ROOMS=c6bd4cfb-20cf-46ab-8707-41e344b76038
+        - NETDATA_CLAIM_ROOMS=''
     volumes:
         - '/proc:/host/proc:ro'
         - '/sys:/host/sys:ro'
